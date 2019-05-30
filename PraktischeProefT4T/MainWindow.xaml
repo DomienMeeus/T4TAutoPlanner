@@ -1,0 +1,23 @@
+﻿<Window x:Class="PraktischeProefT4T.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PraktischeProefT4T"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="900" Width="1600"
+        >
+    <Grid>
+        <ListBox x:Name ="track1" HorizontalAlignment="Left" Height="588" Margin="30,40,0,0" VerticalAlignment="Top" Width="475" />
+        <ListBox x:Name ="track2" HorizontalAlignment="Left" Height="588" Margin="538,40,0,0" VerticalAlignment="Top" Width="409"/>
+        <ListBox x:Name="allTalks" HorizontalAlignment="Left" Height="779" Margin="982,40,0,0" VerticalAlignment="Top" Width="533"/>
+        <Button x:Name ="import" Content="Import all records" HorizontalAlignment="Left" Height="76" Margin="30,685,0,0" VerticalAlignment="Top" Width="218"/>
+        <Button x:Name ="makePlanning" Content="Make a scudule" HorizontalAlignment="Left" Height="76" Margin="30,783,0,0" VerticalAlignment="Top" Width="218"/>
+        <Label Content="Title" HorizontalAlignment="Left" Height="48" Margin="286,671,0,0" VerticalAlignment="Top" Width="130"/>
+        <TextBox x:Name="inputTitle" HorizontalAlignment="Left" Height="48" Margin="456,671,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="300"/>
+        <Label Content="Duration (Minutes)" HorizontalAlignment="Left" Height="48" Margin="286,743,0,0" VerticalAlignment="Top" Width="130"/>
+        <TextBox  x:Name="inputDuration" HorizontalAlignment="Left" Height="48" Margin="456,743,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="72"/>
+        <Button x:Name="submitRecord" Content="Submit" HorizontalAlignment="Left" Height="50" Margin="286,791,0,0" VerticalAlignment="Top" Width="130" Click="SubmitRecord_Click"/>
+
+    </Grid>
+</Window>
