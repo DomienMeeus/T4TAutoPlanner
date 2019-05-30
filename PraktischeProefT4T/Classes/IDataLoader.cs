@@ -4,9 +4,9 @@ namespace PraktischeProefT4T.Classes
 {
     public interface IDataLoader
     {
-        List<Talk> Records { get; }
+        List<string> Records { get; }
 
         
-        List<Talk> ImportAllData();
+        List<string> ImportAllData();
     }
 }

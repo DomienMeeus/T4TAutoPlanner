@@ -73,7 +73,9 @@
     <Compile Include="Classes\IApplication.cs" />
     <Compile Include="Classes\IDataLoader.cs" />
     <Compile Include="Classes\IPlanner.cs" />
+    <Compile Include="Classes\IRecordBuilder.cs" />
     <Compile Include="Classes\Planner.cs" />
+    <Compile Include="Classes\RecordBuilder.cs" />
     <Compile Include="Classes\Talk.cs" />
     <Compile Include="Classes\Track.cs" />
     <Compile Include="MainWindow.xaml.cs">

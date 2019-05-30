@@ -11,13 +11,11 @@
         <ListBox x:Name ="track1" HorizontalAlignment="Left" Height="588" Margin="30,40,0,0" VerticalAlignment="Top" Width="475" />
         <ListBox x:Name ="track2" HorizontalAlignment="Left" Height="588" Margin="538,40,0,0" VerticalAlignment="Top" Width="409"/>
         <ListBox x:Name="allTalks" HorizontalAlignment="Left" Height="779" Margin="982,40,0,0" VerticalAlignment="Top" Width="533"/>
-        <Button x:Name ="import" Content="Import all records" HorizontalAlignment="Left" Height="76" Margin="30,685,0,0" VerticalAlignment="Top" Width="218"/>
-        <Button x:Name ="makePlanning" Content="Make a scudule" HorizontalAlignment="Left" Height="76" Margin="30,783,0,0" VerticalAlignment="Top" Width="218"/>
-        <Label Content="Title" HorizontalAlignment="Left" Height="48" Margin="286,671,0,0" VerticalAlignment="Top" Width="130"/>
-        <TextBox x:Name="inputTitle" HorizontalAlignment="Left" Height="48" Margin="456,671,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="300"/>
-        <Label Content="Duration (Minutes)" HorizontalAlignment="Left" Height="48" Margin="286,743,0,0" VerticalAlignment="Top" Width="130"/>
-        <TextBox  x:Name="inputDuration" HorizontalAlignment="Left" Height="48" Margin="456,743,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="72"/>
-        <Button x:Name="submitRecord" Content="Submit" HorizontalAlignment="Left" Height="50" Margin="286,791,0,0" VerticalAlignment="Top" Width="130" Click="SubmitRecord_Click"/>
+        <Button x:Name ="import" Content="Import all records" HorizontalAlignment="Left" Height="76" Margin="30,685,0,0" VerticalAlignment="Top" Width="218" Click="Import_Click"/>
+        <Button x:Name ="makePlanning" Content="Make a scudule" HorizontalAlignment="Left" Height="76" Margin="30,783,0,0" VerticalAlignment="Top" Width="218" Click="makePlanning_Click"/>
+        <Label Content="Add a new talk" HorizontalAlignment="Left" Height="34" Margin="299,682,0,0" VerticalAlignment="Top" Width="130" RenderTransformOrigin="1.614,0.105"/>
+        <TextBox x:Name="inputRecord" HorizontalAlignment="Left" Height="48" Margin="456,671,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="300"/>
+        <Button x:Name="submitRecord" Content="Submit" HorizontalAlignment="Left" Height="48" Margin="788,671,0,0" VerticalAlignment="Top" Width="130" Click="SubmitRecord_Click"/>
 
     </Grid>
 </Window>

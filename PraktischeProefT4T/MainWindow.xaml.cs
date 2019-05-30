@@ -23,7 +23,7 @@ namespace PraktischeProefT4T
     /// </summary>
     public partial class MainWindow : Window
     {
-         
+        IPlanner planner;
         public MainWindow()
         {
             var container = ContainerConfig.Configure();
@@ -33,12 +33,12 @@ namespace PraktischeProefT4T
 
                 var morningTrack = new Track(3 * 60);
                 var afternoonTrack = new Track(4 * 60, 3 * 60);
-                var dataLoader = scope.Resolve<IDataLoader>(new NamedParameter("initDbPath", @"\..\..\Data\EventData.txt"));
-                var planner = scope.Resolve<IPlanner>(new NamedParameter("initDatLoader", dataLoader), new NamedParameter("initMorningTrack", morningTrack), new NamedParameter("initAfternoonTrack", afternoonTrack));
+                
+                 planner = container.Resolve<IPlanner>(new NamedParameter("initMorningTrack", morningTrack), new NamedParameter("initAfternoonTrack", afternoonTrack));
 
-                allTalks.ItemsSource = RecordsToStrings(dataLoader.Records);
-                track1.ItemsSource = RecordsToStrings(planner.Track1);
-                track2.ItemsSource = RecordsToStrings(planner.Track2);
+
+               
+               
             }
           
 
@@ -73,10 +73,66 @@ namespace PraktischeProefT4T
 
 
         }
+        private List<string> RecordsToStrings(List<Talk> talks, bool showTime)
+        {
+            List<string> recordsStrings = new List<string>();
+           
+            foreach (Talk talk in talks)
+            {
+                string timeString;
+                string recordsToStrings;
+                if (showTime)
+                {
+                    TimeSpan result = TimeSpan.FromMinutes(talk.StartTime);
+                    
+                     timeString = result.ToString("hh':'mm");
+                }
+                else
+                {
+                    timeString = "";
+                }
+               
+                if (talk.Duration == 5)
+                {
+                    recordsToStrings = $"{timeString}{talk.TimePrefix} {talk.Title} lightning  ";
 
+                }
+                else if (talk.Duration == 0)
+                {
+                    recordsToStrings = $"{timeString}{talk.TimePrefix} {talk.Title}";
+                }
+                else
+                {
+                    recordsToStrings = $"{timeString}{talk.TimePrefix} {talk.Title} {talk.Duration}min";
+
+                }
+                recordsStrings.Add(recordsToStrings);
+
+            }
+            return recordsStrings;
+
+
+
+
+        }
         private void SubmitRecord_Click(object sender, RoutedEventArgs e)
         {
-            
+            planner.AddUserRecord(inputRecord.Text);
+            inputRecord.Clear();
+            allTalks.ItemsSource = RecordsToStrings(planner.AllTalks, false);
+        }
+
+        private void Import_Click(object sender, RoutedEventArgs e)
+        {
+            planner.ImportFromFile();
+            allTalks.ItemsSource = RecordsToStrings(planner.AllTalks, false);
+        }
+
+        private void makePlanning_Click(object sender, RoutedEventArgs e)
+        {
+            planner.MaakPlanning();
+            track1.ItemsSource = RecordsToStrings(planner.Track1);
+            track2.ItemsSource = RecordsToStrings(planner.Track2);
         }
     }
 }

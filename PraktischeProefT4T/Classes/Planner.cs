@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PraktischeProefT4T.Classes
 {
-   public  class Planner : IPlanner
+    public class Planner : IPlanner
     {
         private Track afternoonTrack1;
         private Track afternoonTrack2;
@@ -16,23 +16,25 @@ namespace PraktischeProefT4T.Classes
         private List<Talk> removedTalks;
         private List<Talk> allTalks;
         private List<Track> allTracks;
-       
-        private IDataLoader dataloader;
-       
 
-       
+        private IDataLoader dataloader;
+        private IRecordBuilder recordBuilder;
+
+
         public List<Talk> Track1 { get => MakeDayTrack(morningTrack1, afternoonTrack1); }
         public List<Talk> Track2 { get => MakeDayTrack(morningTrack2, afternoonTrack2); }
+        public List<Talk> AllTalks { get => allTalks; set => allTalks = value; }
 
-        public Planner(IDataLoader initDatLoader, Track initMorningTrack, Track initAfternoonTrack)
+        public Planner(IDataLoader initDatLoader, IRecordBuilder initRecordBuilder, Track initMorningTrack, Track initAfternoonTrack)
         {
             dataloader = initDatLoader;
+            recordBuilder = initRecordBuilder;
             afternoonTrack1 = new Track(initAfternoonTrack.MaxTime, initAfternoonTrack.MinTime);
             afternoonTrack2 = new Track(initAfternoonTrack.MaxTime, initAfternoonTrack.MinTime);
             morningTrack1 = new Track(initMorningTrack.MaxTime);
             morningTrack2 = new Track(initMorningTrack.MaxTime);
             removedTalks = new List<Talk>();
-
+            allTalks = new List<Talk>();
             allTracks = new List<Track>()
            {
                afternoonTrack1,
@@ -40,13 +42,13 @@ namespace PraktischeProefT4T.Classes
                morningTrack1,
                morningTrack2
            };
-           
-           
+
+
         }
         public bool MaakPlanning()
         {
             ClearAllTracks();
-            unplannedTalks = SortTalks(allTalks);
+            unplannedTalks = SortTalks(ClearTalks(AllTalks));
 
             BerekenTrack(morningTrack1, out morningTrack1);
             BerekenTrack(morningTrack2, out morningTrack2);
@@ -58,19 +60,21 @@ namespace PraktischeProefT4T.Classes
         }
         public void ImportFromFile()
         {
-            allTalks = dataloader.ImportAllData();
-        }
-        public string AddUserRecord(string userInput)
-        {
-            if (userInput !="" || userInput == null)
-            {
 
-            }
+
+            allTalks.AddRange(recordBuilder.BuildRecord(dataloader.ImportAllData()));
+        }
+        public void AddUserRecord(string userInput)
+        {
+
+            AllTalks.Add(recordBuilder.BuildRecord(userInput));
+
+
         }
 
-       private bool CheckIfComplete()
+        private bool CheckIfComplete()
         {
-            if ( unplannedTalks.Count() == 0
+            if (unplannedTalks.Count() == 0
                 &&
                  morningTrack1.MinTimeReached
                 &&
@@ -88,6 +92,17 @@ namespace PraktischeProefT4T.Classes
 
 
         }
+        private List<Talk> ClearTalks(List<Talk> talks) {
+           
+            foreach (Talk talk in talks)
+            {
+                talk.StartTime = 0;
+                talk.TimePrefix = "";
+            }
+            return talks;
+
+        }
+
 
         private List<Talk> MakeDayTrack(Track morning, Track afternoon)
         {

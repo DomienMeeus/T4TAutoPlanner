@@ -12,10 +12,10 @@ namespace PraktischeProefT4T.Classes
         public static IContainer Configure()
         {
             var builder = new ContainerBuilder();
-            builder.RegisterType<Task>();
-            builder.RegisterType<Talk>();
+            
             builder.RegisterType<DataLoader>().As<IDataLoader>();
             builder.RegisterType<Planner>().As<IPlanner>();
+            builder.RegisterType<RecordBuilder>().As<IRecordBuilder>();
            
 
             return builder.Build();
