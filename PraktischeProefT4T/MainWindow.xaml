@@ -8,14 +8,25 @@
         Title="MainWindow" Height="900" Width="1600"
         >
     <Grid>
-        <ListBox x:Name ="track1" HorizontalAlignment="Left" Height="588" Margin="30,40,0,0" VerticalAlignment="Top" Width="475" />
-        <ListBox x:Name ="track2" HorizontalAlignment="Left" Height="588" Margin="538,40,0,0" VerticalAlignment="Top" Width="409"/>
-        <ListBox x:Name="allTalks" HorizontalAlignment="Left" Height="779" Margin="982,40,0,0" VerticalAlignment="Top" Width="533"/>
-        <Button x:Name ="import" Content="Import all records" HorizontalAlignment="Left" Height="76" Margin="30,685,0,0" VerticalAlignment="Top" Width="218" Click="Import_Click"/>
-        <Button x:Name ="makePlanning" Content="Make a scudule" HorizontalAlignment="Left" Height="76" Margin="30,783,0,0" VerticalAlignment="Top" Width="218" Click="makePlanning_Click"/>
-        <Label Content="Add a new talk" HorizontalAlignment="Left" Height="34" Margin="299,682,0,0" VerticalAlignment="Top" Width="130" RenderTransformOrigin="1.614,0.105"/>
-        <TextBox x:Name="inputRecord" HorizontalAlignment="Left" Height="48" Margin="456,671,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="300"/>
-        <Button x:Name="submitRecord" Content="Submit" HorizontalAlignment="Left" Height="48" Margin="788,671,0,0" VerticalAlignment="Top" Width="130" Click="SubmitRecord_Click"/>
+        <Label Content="Track One" HorizontalAlignment="Left" Height="54" Margin="48,32,0,0" VerticalAlignment="Top" Width="381"/>
+        <ListBox x:Name ="track1" HorizontalAlignment="Left" Height="522" Margin="30,106,0,0" VerticalAlignment="Top" Width="475" />
+        
+        <Label Content="Track Two" HorizontalAlignment="Left" Height="54" Margin="566,32,0,0" VerticalAlignment="Top" Width="381"/>
+        <ListBox x:Name ="track2" HorizontalAlignment="Left" Height="522" Margin="538,106,0,0" VerticalAlignment="Top" Width="409"/>
+        
+        <Label Content="All Talks" HorizontalAlignment="Left" Height="54" Margin="1005,32,0,0" VerticalAlignment="Top" Width="381"/>
+        <ListBox x:Name="allTalks" HorizontalAlignment="Left" Height="522" Margin="982,106,0,0" VerticalAlignment="Top" Width="533"/>
+        
+        <Button x:Name ="import" Content="Import all records" HorizontalAlignment="Left" Height="76" Margin="30,665,0,0" VerticalAlignment="Top" Width="218" Click="Import_Click"/>
+        <Button x:Name ="makePlanning"  Content="Make a schedule" HorizontalAlignment="Left" Height="76" Margin="30,759,0,0" VerticalAlignment="Top" Width="218" Click="makePlanning_Click"/>
+        
+        <Label Content="Add a new talk" HorizontalAlignment="Left" Height="34" Margin="299,693,0,0" VerticalAlignment="Top" Width="130" RenderTransformOrigin="1.614,0.105"/>
+
+        <Label Content="Duration(min)" HorizontalAlignment="Left" Height="34" Margin="646,727,0,0" VerticalAlignment="Top" Width="130" RenderTransformOrigin="1.614,0.105"/>
+        <Label Content="Title" HorizontalAlignment="Left" Height="34" Margin="319,727,0,0" VerticalAlignment="Top" Width="130" RenderTransformOrigin="1.614,0.105"/>
+        <TextBox x:Name="inputTitle" HorizontalAlignment="Left" Height="48" Margin="299,766,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="300"/>
+        <TextBox x:Name="inputDuration" HorizontalAlignment="Left" Height="48" Margin="646,766,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="81" RenderTransformOrigin="-1.103,0.984"/>
+        <Button x:Name="submitRecord" Content="Submit" HorizontalAlignment="Left" Height="48" Margin="766,766,0,0" VerticalAlignment="Top" Width="130" Click="SubmitRecord_Click"/>
 
     </Grid>
 </Window>

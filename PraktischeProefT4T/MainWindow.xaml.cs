@@ -14,6 +14,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 
 namespace PraktischeProefT4T
@@ -24,115 +26,116 @@ namespace PraktischeProefT4T
     public partial class MainWindow : Window
     {
         IPlanner planner;
+
+        IPresentationFormatter presentationFormatter;
+        IInputValidator inputValidator;
+
+
+        public List<string> TrackData1 { get => presentationFormatter.RecordsToStrings(planner.Track1); }
+        public List<string> TrackData2 { get => presentationFormatter.RecordsToStrings(planner.Track2); }
+
         public MainWindow()
         {
+
             var container = ContainerConfig.Configure();
-            using (var scope =container.BeginLifetimeScope())
-            {
-                InitializeComponent();
-
-                var morningTrack = new Track(3 * 60);
-                var afternoonTrack = new Track(4 * 60, 3 * 60);
-                
-                 planner = container.Resolve<IPlanner>(new NamedParameter("initMorningTrack", morningTrack), new NamedParameter("initAfternoonTrack", afternoonTrack));
 
 
-               
-               
-            }
-          
+            Track morningTrack = new Track(3 * 60);
+            Track afternoonTrack = new Track(4 * 60, 3 * 60);
+            planner = container.Resolve<IPlanner>
+       (new NamedParameter("initMorningTrack", morningTrack),
+       new NamedParameter("initAfternoonTrack", afternoonTrack));
 
-        }
-       
-        private List<string> RecordsToStrings(List<Talk> talks)
-        {
-            List<string> recordsStrings = new List<string>();
-            foreach (Talk talk in talks)
-            {
-                TimeSpan result = TimeSpan.FromMinutes(talk.StartTime);
-                string recordsToStrings;
-                string TimeString = result.ToString("hh':'mm");
-                if (talk.Duration == 5)
-                {
-                    recordsToStrings = $"{TimeString}{talk.TimePrefix} {talk.Title} lightning  ";
-
-                }else if(talk.Duration == 0){
-                    recordsToStrings = $"{TimeString}{talk.TimePrefix} {talk.Title}";
-                }
-                else
-                {
-                    recordsToStrings = $"{TimeString}{talk.TimePrefix} {talk.Title} {talk.Duration}min";
-
-                }
-                recordsStrings.Add(recordsToStrings);
-
-            }
-            return recordsStrings;
-
+            presentationFormatter = container.Resolve<IPresentationFormatter>();
+            inputValidator = container.Resolve<IInputValidator>();
 
 
 
         }
-        private List<string> RecordsToStrings(List<Talk> talks, bool showTime)
-        {
-            List<string> recordsStrings = new List<string>();
-           
-            foreach (Talk talk in talks)
-            {
-                string timeString;
-                string recordsToStrings;
-                if (showTime)
-                {
-                    TimeSpan result = TimeSpan.FromMinutes(talk.StartTime);
-                    
-                     timeString = result.ToString("hh':'mm");
-                }
-                else
-                {
-                    timeString = "";
-                }
-               
-                if (talk.Duration == 5)
-                {
-                    recordsToStrings = $"{timeString}{talk.TimePrefix} {talk.Title} lightning  ";
 
-                }
-                else if (talk.Duration == 0)
-                {
-                    recordsToStrings = $"{timeString}{talk.TimePrefix} {talk.Title}";
-                }
-                else
-                {
-                    recordsToStrings = $"{timeString}{talk.TimePrefix} {talk.Title} {talk.Duration}min";
-
-                }
-                recordsStrings.Add(recordsToStrings);
-
-            }
-            return recordsStrings;
-
-
-
-
-        }
+        
         private void SubmitRecord_Click(object sender, RoutedEventArgs e)
         {
-            planner.AddUserRecord(inputRecord.Text);
-            inputRecord.Clear();
-            allTalks.ItemsSource = RecordsToStrings(planner.AllTalks, false);
+
+            try
+            {
+                int duration;
+                string title;
+                if (inputValidator.ValidateTalk(inputTitle.Text, inputDuration.Text, out title, out duration))
+                {
+                    planner.AddUserRecord(title, duration);
+                    inputTitle.Clear();
+                    inputDuration.Clear();
+                }
+
+                allTalks.ItemsSource = presentationFormatter.RecordsToStrings(planner.AllTalks, false);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+
+
+
+            }
+
+
+
         }
 
         private void Import_Click(object sender, RoutedEventArgs e)
         {
-            planner.ImportFromFile();
-            allTalks.ItemsSource = RecordsToStrings(planner.AllTalks, false);
+
+            try
+            {
+                planner.ImportFromFile();
+                allTalks.ItemsSource = presentationFormatter.RecordsToStrings(planner.AllTalks, false);
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+            }
+
         }
 
         private void makePlanning_Click(object sender, RoutedEventArgs e)
         {
-            planner.MaakPlanning();
-            track1.ItemsSource = RecordsToStrings(planner.Track1);
-            track2.ItemsSource = RecordsToStrings(planner.Track2);
+            try
+            {
+                if (planner.AllTalks.Count > 0)
+                {
+                    if (planner.MaakPlanning(planner.AllTalks))
+                    {
+                        track1.ItemsSource = TrackData1;
+                        track2.ItemsSource = TrackData2;
+                    }
+                    else
+                    {
+                        throw new Exception("Unable to Schedule loaded data");
+                    }
+                }
+                else
+                {
+                    throw new Exception("No data loaded");
+                }
+                
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+            }
+
+
+
+
+
+
+        }
+
+        private void SaveBtn_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

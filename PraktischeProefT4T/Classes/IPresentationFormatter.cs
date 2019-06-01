@@ -6,8 +6,12 @@ using System.Threading.Tasks;
 
 namespace PraktischeProefT4T.Classes
 {
-   public class DataWriter
+    interface IPresentationFormatter
     {
-        
+        List<string> RecordsToStrings(List<Talk> talks);
+
+
+        List<string> RecordsToStrings(List<Talk> talks, bool showTime);
+
     }
 }

@@ -13,52 +13,89 @@ namespace PraktischeProefT4T.Classes
             int duration = ExtractTime(recordString);
             string title = ExtractTitle(recordString, duration);
 
+            if((duration == -1)||(title == ""))
+            {
+                return null;
+            }
+            else
+            {
+                return new Talk(title, duration);
+            }
 
-            return new Talk(title, duration);
+           
         }
         public List<Talk> BuildRecord(List<string> records)
         {
             List<Talk> output = new List<Talk>();
             foreach (string record in records)
             {
-              output.Add(BuildRecord(record));
+                Talk talkObj = BuildRecord(record);
+               if(talkObj != null)
+                {
+                    output.Add(talkObj);
+                }
+                 
+                
+              
             }
             return output;
         }
         private static int ExtractTime(string input)
         {
-            string[] record = input.Split(' ');
-
-            foreach (string word in record)
+            try
             {
-                if (word.Contains("min"))
+
+                string[] record = input.Split(' ');
+
+                foreach (string word in record)
                 {
-                    string timeStr = word.Replace("min", "");
-                    int timeInt;
-                    if (Int32.TryParse(timeStr, out timeInt))
+                    if (word.Contains("min"))
                     {
-                        return timeInt;
+                        string timeStr = word.Replace("min", "");
+                        int timeInt;
+                        if (Int32.TryParse(timeStr, out timeInt))
+                        {
+                            return timeInt;
+                        }
+                    }
+                    else if (word == "lightning")
+                    {
+                        return 5;
                     }
                 }
-                else if (word == "lightning")
-                {
-                    return 5;
-                }
+                throw new Exception("Talk has an invalid time fromat. Use min of lighting");
             }
-            return 0;
+            catch (Exception timeExtr)
+            {
+                return  -1;
+                throw timeExtr;
+
+            }
+            
 
         }
 
-        private string ExtractTitle(string input, int duration)
+        private static string ExtractTitle(string input, int duration)
         {
-            if (duration == 5)
-            {
-                return input.Replace("lightning", "");
-            }
-            else
-            {
-                return input.Replace($"{duration}min", "");
-            }
+            string output;
+            
+                 
+                
+                if (duration <= 5)
+                {
+                   output = input.Replace("lightning", "");
+                }
+                else
+                {
+                    output = input.Replace($"{duration}min", "");
+                }
+
+            return output;
+            
+            
+            
         }
+
+        
     }
 }

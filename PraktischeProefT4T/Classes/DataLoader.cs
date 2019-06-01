@@ -19,7 +19,7 @@ namespace PraktischeProefT4T.Classes
         }
 
         public List<string> ImportAllData()
-        {
+        {   //Load all Data
             records.Clear();
             try
             {
@@ -34,14 +34,14 @@ namespace PraktischeProefT4T.Classes
                 
                 return Records;
             }
-            catch (Exception)
+            catch (Exception dbErr)
             {
 
-                MessageBox.Show("Data import failed");
-                return records;
+                throw dbErr;
 
 
             }
+            
             
 
         }

@@ -16,15 +16,18 @@ namespace PraktischeProefT4T.Classes
         private List<Talk> removedTalks;
         private List<Talk> allTalks;
         private List<Track> allTracks;
-
+        private int counter;
+        private int maxCounter;
         private IDataLoader dataloader;
         private IRecordBuilder recordBuilder;
 
 
         public List<Talk> Track1 { get => MakeDayTrack(morningTrack1, afternoonTrack1); }
         public List<Talk> Track2 { get => MakeDayTrack(morningTrack2, afternoonTrack2); }
-        public List<Talk> AllTalks { get => allTalks; set => allTalks = value; }
-
+        public List<Talk> AllTalks { get => allTalks; set=> allTalks = value; }
+        public int TotalTalkTime { get => allTalks.Select(x => x.Duration).Sum(); }
+        public int MaxTalkTime { get => allTracks.Select(x => x.MaxTime).Sum(); }
+        public int RemainingTime { get => MaxTalkTime - TotalTalkTime; }
         public Planner(IDataLoader initDatLoader, IRecordBuilder initRecordBuilder, Track initMorningTrack, Track initAfternoonTrack)
         {
             dataloader = initDatLoader;
@@ -42,33 +45,81 @@ namespace PraktischeProefT4T.Classes
                morningTrack1,
                morningTrack2
            };
-
+            maxCounter = 100;
 
         }
-        public bool MaakPlanning()
+        public bool MaakPlanning(List<Talk> talks)
         {
             ClearAllTracks();
-            unplannedTalks = SortTalks(ClearTalks(AllTalks));
+            if (BerekenPlanning(talks))
+            {
+                return true ;
+            }
 
-            BerekenTrack(morningTrack1, out morningTrack1);
-            BerekenTrack(morningTrack2, out morningTrack2);
-            BerekenTrack(afternoonTrack1, out afternoonTrack1);
-            BerekenTrack(afternoonTrack2, out afternoonTrack2);
+            return false;
 
-            return CheckIfComplete();
+            
 
+        }
+        private bool BerekenPlanning(List<Talk> talks)
+        {
+            if (counter < maxCounter) {
+                unplannedTalks = SortTalks(ClearTalks(talks));
+
+                BerekenTrack(morningTrack1, out morningTrack1);
+                BerekenTrack(morningTrack2, out morningTrack2);
+                BerekenTrack(afternoonTrack1, out afternoonTrack1);
+                BerekenTrack(afternoonTrack2, out afternoonTrack2);
+                if (!CheckIfComplete())
+                {
+                    counter++;
+                    BerekenPlanning(unplannedTalks);
+                }
+            }
+            else
+            {
+                return false;
+            }
+            return true;
+            
         }
         public void ImportFromFile()
         {
+            List<Talk> importedTalks = recordBuilder.BuildRecord(dataloader.ImportAllData());
+           if (importedTalks.Select(x => x.Duration).Sum() <= RemainingTime)
+            {
+                allTalks.AddRange(importedTalks);
+            }
+            else
+            {
+                throw new Exception("Total duration of imported talks is to large.");
+            }
 
-
-            allTalks.AddRange(recordBuilder.BuildRecord(dataloader.ImportAllData()));
+            
         }
-        public void AddUserRecord(string userInput)
+        public void AddUserRecord(string title, int duration)
         {
+            try
+            {
+                if(duration<= RemainingTime)
+                {
+                    allTalks.Add(new Talk(title ,duration));
+                }
+                else
+                {
+                    throw new Exception("Duration is to long.");
+                }
+               
+            }
+            catch (Exception)
+            {
 
-            AllTalks.Add(recordBuilder.BuildRecord(userInput));
-
+                throw;
+            }
+            
+           
+            
+            
 
         }
 

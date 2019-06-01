@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PraktischeProefT4T.Classes
 {
-   public class Talk
+   public class Talk 
     {
         private int id;
         static int count = 0;
@@ -24,6 +24,7 @@ namespace PraktischeProefT4T.Classes
 
         public Talk(string initTitle, int initDuration)
         {
+            
             duration = initDuration;
             title = initTitle;
             id = count;

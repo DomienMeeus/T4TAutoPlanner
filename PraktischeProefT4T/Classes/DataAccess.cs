@@ -15,7 +15,7 @@ namespace PraktischeProefT4T.Classes
             dbPath = BuildPath(@"\..\..\Data\EventData.txt");
         }
         private string BuildPath(string path)
-        {
+        {   //Build the path to the data file
             string dir = Path.GetDirectoryName(
       System.Reflection.Assembly.GetExecutingAssembly().Location);
 
